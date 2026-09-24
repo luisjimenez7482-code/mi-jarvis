@@ -2,6 +2,7 @@ services:
   - type: web
     name: mi-jarvis-asistente
     env: python
-    buildCommand: ".venv/bin/pip install --upgrade pip && .venv/bin/pip install -r requirements.txt"
-    startCommand: "python -m uvicorn main:app --host 0.0.0.0 --port $PORT"
+    region: oregon
     plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
