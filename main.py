@@ -1,4 +1,4 @@
-çimport os
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from openai import OpenAI
