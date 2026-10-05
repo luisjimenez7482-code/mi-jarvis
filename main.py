@@ -28,7 +28,7 @@ def procesar_chat(datos: Consulta):
     try:
         # Llamada usando un modelo gratuito y rapidísimo de Groq
         response = client.chat.completions.create(
-            model="llama-3.1-8b-instant",
+            model="llama3-8b-8192",
             messages=[
                 {"role": "system", "content": "Eres JARVIS, un asistente virtual avanzado, inteligente, conciso y leal."},
                 {"role": "user", "content": datos.prompt}
