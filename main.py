@@ -20,31 +20,19 @@ def read_root():
 
 @app.post("/chat")
 def procesar_chat(datos: Consulta):
-    # Lista de respaldo por si algún modelo llega a fallar
-    modelos_disponibles = [
-        "llama-3.3-70b-versatile",
-        "llama-3.1-8b-instant",
-        "llama3-8b-8192"
-    ]
-    
-    ultimo_error = None
-    for modelo in modelos_disponibles:
-        try:
-            response = client.chat.completions.create(
-                model=modelo,
-                messages=[
-                    {"role": "system", "content": "Eres JARVIS, un asistente virtual avanzado, inteligente, conciso y leal."},
-                    {"role": "user", "content": datos.prompt}
-                ]
-            )
-            return {
-                "status": "success",
-                "modelo_usado": modelo,
-                "usuario": datos.usuario,
-                "respuesta_jarvis": response.choices[0].message.content
-            }
-        except Exception as e:
-            ultimo_error = str(e)
-            continue
-            
-    raise HTTPException(status_code=500, detail=f"Error en todos los modelos: {ultimo_error}")
+    # Usamos únicamente el modelo actual y estable
+    try:
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": "Eres JARVIS, un asistente virtual avanzado, inteligente, conciso y leal."},
+                {"role": "user", "content": datos.prompt}
+            ]
+        )
+        return {
+            "status": "success",
+            "usuario": datos.usuario,
+            "respuesta_jarvis": response.choices[0].message.content
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
