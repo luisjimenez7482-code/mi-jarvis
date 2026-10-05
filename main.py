@@ -1,4 +1,4 @@
-import os
+çimport os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from openai import OpenAI
@@ -28,7 +28,7 @@ def procesar_chat(datos: Consulta):
     try:
         # Llamada usando un modelo gratuito y rapidísimo de Groq
         response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="llama-3.1-8b-instant",
             messages=[
                 {"role": "system", "content": "Eres JARVIS, un asistente virtual avanzado, inteligente, conciso y leal."},
                 {"role": "user", "content": datos.prompt}
