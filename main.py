@@ -5,8 +5,11 @@ from openai import OpenAI
 
 app = FastAPI(title="JARVIS Assistant", version="1.0")
 
-# Inicializar el cliente de OpenAI (tomará la clave de las variables de entorno)
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+# Inicializar el cliente apuntando a Groq y usando su variable de entorno
+client = OpenAI(
+    base_url="https://api.groq.com/openai/v1",
+    api_key=os.environ.get("GROQ_API_KEY")
+)
 
 class Consulta(BaseModel):
     prompt: str
@@ -14,25 +17,24 @@ class Consulta(BaseModel):
 
 @app.get("/")
 def read_root():
-    return {"mensaje": "¡Hola! Tu asistente JARVIS con IA está en línea y funcionando."}
+    return {"mensaje": "¡Hola! Tu asistente JARVIS con IA gratuita está en línea."}
 
 @app.get("/saludo/{nombre}")
 def saludar_usuario(nombre: str):
-    return {"mensaje": f"¡Saludos, {nombre}! Los sistemas de JARVIS están operativos y listos."}
+    return {"mensaje": f"¡Saludos, {nombre}! Los sistemas de JARVIS están operativos."}
 
 @app.post("/chat")
 def procesar_chat(datos: Consulta):
     try:
-        # Llamada al modelo de inteligencia artificial
+        # Llamada usando un modelo gratuito y rapidísimo de Groq
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": "Eres JARVIS, un asistente virtual avanzado, inteligente, conciso y leal."},
                 {"role": "user", "content": datos.prompt}
             ]
         )
         
-        # Extraer la respuesta del modelo
         respuesta_ia = response.choices[0].message.content
         
         return {
